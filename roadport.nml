@@ -1,0 +1,127 @@
+grf {
+   grfid:                  "BBRR";
+   name:                   string(STR_NAME);
+   desc:                   string(STR_DESC);
+   //url:                    string(STR_);
+   version:                1;
+   min_compatible_version: 1;
+}
+
+spritelayout sl_grass {
+    ground {
+        sprite: GROUNDSPRITE_NORMAL;
+    }
+    childsprite {
+        sprite: GROUNDSPRITE_SNOW;
+        always_draw: 1;
+        hide_sprite: 1-(terrain_type == TILETYPE_SNOW);
+    }
+}
+
+item (FEAT_AIRPORTTILES, item_grass, 0) {
+    property {
+        substitute: 0;
+    }
+    graphics {
+        default: sl_grass;
+        foundations: CB_RESULT_FOUNDATIONS;
+    }
+}
+
+spritelayout sl_road {
+    ground {
+        sprite: 1314;
+    }
+}
+
+item (FEAT_AIRPORTTILES, item_road, 1) {
+    property {
+        substitute: 0;
+    }
+    graphics {
+        default: sl_road;
+        foundations: CB_RESULT_FOUNDATIONS;
+    }
+}
+
+spritelayout sl_paved {
+    ground {
+        sprite: 2634;
+    }
+    childsprite {
+        sprite: GROUNDSPRITE_SNOW;
+        always_draw: 1;
+        hide_sprite: 1-(terrain_type == TILETYPE_SNOW);
+    }
+}
+
+item (FEAT_AIRPORTTILES, item_paved, 2) {
+    property {
+        substitute: 0;
+    }
+    graphics {
+        default: sl_paved;
+        foundations: CB_RESULT_FOUNDATIONS;
+    }
+}
+
+tilelayout tl_road_runway_north {
+    rotation: DIRECTION_NORTH;
+    3, 1: item_grass;
+    0, 2: item_paved;
+    1, 2: item_paved;
+    2, 2: item_paved;
+    3, 2: item_paved;
+}
+
+tilelayout tl_road_runway_east {
+    rotation: DIRECTION_EAST;
+    1, 0: item_grass;
+    2, 0: item_paved;
+    2, 1: item_paved;
+    2, 2: item_paved;
+    2, 3: item_paved;
+}
+
+//requiered for default airport to stay
+
+item (FEAT_AIRPORTS, item_airport, 0) {
+    property {
+        override: 0;
+    }
+}
+
+spriteset (ss_ne, "gfx/NE.png") {
+    [0, 0, 192, 95, 0, 0]
+}
+
+spriteset (ss_se, "gfx/SE.png") {
+    [0, 0, 192, 95, 0, 0]
+}
+
+switch (FEAT_AIRPORTS, SELF, sw_layout_preview, layout) {
+    1: ss_se;
+    default: ss_ne;
+}
+
+switch (FEAT_AIRPORTS, SELF, sw_layout_name, layout) {
+    1: string(STR_LAYOUT_EAST);
+    default: string(STR_LAYOUT_NORTH);
+}
+
+item (FEAT_AIRPORTS, item_road_runway, 1) {
+    property {
+        override: 0;
+        name: string(STR_NAME_AIRPORT);
+        layouts: [tl_road_runway_north, tl_road_runway_east];
+        ttd_airport_type: 0;	
+        catchment_area: 4;
+        noise_level: 3;
+        maintenance_cost: 5;
+    }
+    graphics {
+        layout_name: sw_layout_name;
+        additional_text: string(STR_ADDITIONAL_TEXT);
+        default: sw_layout_preview;
+    }
+}

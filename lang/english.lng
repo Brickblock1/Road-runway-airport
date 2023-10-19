@@ -1,0 +1,10 @@
+##grflangid 0x01
+STR_NAME :Road runways
+STR_DESC :A small grf which adds airports without runways which can be used to make road runways. {}{COPYRIGHT} 2023 Brickblock1 {}Licensed under GPLv2{} GUI sprites made from OpenGFX sprites {}May break with any update!
+
+STR_NAME_AIRPORT :Road runway 
+
+STR_LAYOUT_NORTH :NE facing 
+STR_LAYOUT_EAST :SE facing 
+
+STR_ADDITIONAL_TEXT :Place next to road, the "runway" will be placed on it.
